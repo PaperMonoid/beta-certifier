@@ -10,7 +10,7 @@ CONTAINERID=$(docker ps | grep bc/cert-issuer:1.0 | awk -F " " '{print $1}' | ta
 docker cp $BETA_PROJECTS/beta-certifier/sample_data/unsigned_certificates/. $CONTAINERID:/etc/cert-issuer/data/unsigned_certificates
 docker cp $BETA_PROJECTS/beta-certifier/certify_docker.sh $CONTAINERID:/
 
-docker exec -i $CONTAINERID bash < generate_docker.sh
+docker exec -i $CONTAINERID bash < certify_docker.sh
 
 echo "Copying certificates..."
 docker cp $CONTAINERID:/etc/cert-issuer/data/blockchain_certificates/. $BETA_PROJECTS/beta-certifier/data/blockchain_certificates

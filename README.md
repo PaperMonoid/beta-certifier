@@ -20,7 +20,7 @@ git clone https://github.com/TritiumMonoid/beta-certifier.git
 Run the following commands to generate certificates:
 ```shell
 # set the projects directoy
-BETA_PROJECTS=$PATH_TO_THE_PROJECTS_DIRECTORY
+export BETA_PROJECTS=$PATH_TO_THE_PROJECTS_DIRECTORY
 
 # give permissions to execute the script
 chmod +x certify.sh
@@ -29,4 +29,4 @@ chmod +x certify.sh
 ./certify.sh
 ```
 
-The generated certificates will be in the path `data/blockchain_certificates/`
+The generated certificates will be in the path `data/blockchain_certificates/` and can be verified at [MITs blockcert projects website](https://www.blockcerts.org/)
