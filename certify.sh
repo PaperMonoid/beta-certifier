@@ -1,11 +1,12 @@
-create-certificate-template -c $BETA_PROJECTS/beta-certifier/conf.ini
+#create-certificate-template -c $BETA_PROJECTS/beta-certifier/my-conf.ini
+#instantiate-certificate-batch -c $BETA_PROJECTS/beta-certifier/my-conf.ini
+python $BETA_PROJECTS/cert-tools/cert_tools/create_v2_certificate_template.py -c $BETA_PROJECTS/beta-certifier/my-conf.ini
+python $BETA_PROJECTS/cert-tools/cert_tools/instantiate_v2_certificate_batch.py -c $BETA_PROJECTS/beta-certifier/my-conf.ini
 
-instantiate-certificate-batch -c $BETA_PROJECTS/beta-certifier/conf.ini
 
-#-i is for interactive -d is for detached
-docker run -dt bc/cert-issuer:1.0 bash
+CONTAINERID=$(docker ps -a | awk -F " " '{ if($2=="bc/cert-issuer:1.0") print $1 }')
 
-CONTAINERID=$(docker ps | grep bc/cert-issuer:1.0 | awk -F " " '{print $1}' | tail -1)
+docker start $CONTAINERID
 
 docker cp $BETA_PROJECTS/beta-certifier/sample_data/unsigned_certificates/. $CONTAINERID:/etc/cert-issuer/data/unsigned_certificates
 docker cp $BETA_PROJECTS/beta-certifier/certify_docker.sh $CONTAINERID:/
@@ -16,6 +17,10 @@ echo "Copying certificates..."
 docker cp $CONTAINERID:/etc/cert-issuer/data/blockchain_certificates/. $BETA_PROJECTS/beta-certifier/data/blockchain_certificates
 echo "Certificates copied!"
 
-echo "Deleting container..."
-docker ps | grep bc/cert-issuer:1.0 | awk -F " " '{print $1}' | tail -1 | xargs docker kill
-echo "Container deleted!"
+echo "Deleting old certificates..."
+docker exec -ti $CONTAINERID sh -c "rm /etc/cert-issuer/data/unsigned_certificates/*.json && rm /etc/cert-issuer/data/blockchain_certificates/*.json"
+echo "Certificates deleted!"
+
+echo "Killing container..."
+docker kill $CONTAINERID
+echo "Container killed!"
