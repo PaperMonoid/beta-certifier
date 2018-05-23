@@ -1,8 +1,15 @@
 #create-certificate-template -c $BETA_PROJECTS/beta-certifier/my-conf.ini
 #instantiate-certificate-batch -c $BETA_PROJECTS/beta-certifier/my-conf.ini
+
+cp $BETA_PROJECTS/beta-certifier/conf.ini $BETA_PROJECTS/beta-certifier/my-conf.ini
+export HTML_CODE=$(tr -d '\n' < $BETA_PROJECTS/beta-certifier/certificate.html | sed "s/\//\\\\\//g")
+sed -ie "s/<h1>Some html code<\/h1>/$HTML_CODE/g" $BETA_PROJECTS/beta-certifier/my-conf.ini
+cat $BETA_PROJECTS/beta-certifier/my-conf.ini
+
 python $BETA_PROJECTS/cert-tools/cert_tools/create_v2_certificate_template.py -c $BETA_PROJECTS/beta-certifier/my-conf.ini
 python $BETA_PROJECTS/cert-tools/cert_tools/instantiate_v2_certificate_batch.py -c $BETA_PROJECTS/beta-certifier/my-conf.ini
 
+rm my-conf.ini
 
 CONTAINERID=$(docker ps -a | awk -F " " '{ if($2=="bc/cert-issuer:1.0") print $1 }')
 

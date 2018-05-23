@@ -48,20 +48,6 @@ chmod +x clean.sh
 ./clean.sh
 ```
 
-In order to view your certificates with cert-viewer you need to serve a local json file with flask:
-```shell
-# install flask if needed
-pip install flask
-
-# change directory to beta-certifier
-cd beta-certifier
-
-# run server
-python server/server.py
-```
-
-You may run cert-viewer now and validate your certificates with it.
-
 ## Common errors
 If there are errors while running the docker container you might want to run the following command:
 ```shell
