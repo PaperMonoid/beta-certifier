@@ -5,8 +5,9 @@
 cp $BETA_PROJECTS/beta-certifier/conf.ini $BETA_PROJECTS/beta-certifier/my-conf.ini
 tr -d '\n' < $BETA_PROJECTS/beta-certifier/certificate.html > my-certificate.html
 sed -e "s/\//\\\\\//g" my-certificate.html
-HTML_CODE=$(cat my-certificate.html)
-sed -ie "s/<h1>Some html code<\/h1>/$HTML_CODE/g" $BETA_PROJECTS/beta-certifier/my-conf.ini
+#HTML_CODE=$(cat $BETA_PROJECTS/beta-certifier/my-certificate.html)
+#sed -ie "s/<h1>Some html code<\/h1>/$HTML_CODE/g" $BETA_PROJECTS/beta-certifier/my-conf.ini
+cat $BETA_PROJECTS/beta-certifier/my-certificate.html >> $BETA_PROJECTS/beta-certifier/my-conf.ini
 rm my-certificate.html
 cat $BETA_PROJECTS/beta-certifier/my-conf.ini
 
